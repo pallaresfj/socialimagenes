@@ -1,0 +1,54 @@
+{% extends "layout.html"%}
+{% block title %}Perfil de usuario{% endblock %}
+
+{%block content%}
+
+{% for usuario in usuarios %}
+<div class="container w-50 my-5 border-1 rounded shadow">
+  <h2 class="fw-bold text-center text-success py-2">Datos del usuario</h2>
+  <div class="row">
+    <form action="{{ url_for('perfil_usuario') }}" method="post" name="formRegistro" onsubmit="validar_formulario();">
+      <div class="mb-4">
+        <input class="form-control" type="text" value = "{{ usuario[0]}}" name="txtId" id="txtId" hidden>
+          <input class="form-control" type="email" value = "{{ usuario[1]}}" name="email" id="email" disabled>
+      </div>
+      <div class="mb-4">
+        <label for="nombre" class="form-label fw-bold">
+            Nombre
+        </label>
+        <input class="form-control" type="text" value = "{{ usuario[3]}}" name="nombre"  id="nombre">
+      </div>
+      <div class="mb-4">
+        <textarea class="form-control" name="descripcion" id="descripcion" rows="8" placeholder="Descripción">{{ usuario[5]}}</textarea>
+      </div>
+      <div class="mb-4">
+        <label for="password_act" class="form-label fw-bold">
+            Contraseña actual
+        </label>
+        <input class="form-control" type="password"  name="password_act" id="password_act">
+      </div>
+      <div class="mb-4">
+        <label for="password_new" class="form-label fw-bold">
+            Contraseña nueva
+        </label>
+        <input class="form-control" type="password"  name="password_new" id="password_new">
+      </div>
+      <div class="mb-4">
+        <label for="password_conf" class="form-label fw-bold">
+            Confirmar contraseña
+        </label>
+        <input class="form-control" type="password"  name="password_conf" id="password_conf">
+      </div>
+      <div class="d-grid mb-4">
+          <button type="submit" class="btn btn-success fw-bold">
+              Guardar Cambios
+          </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+{% endfor %}
+
+{%endblock%}

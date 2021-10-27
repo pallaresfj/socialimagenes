@@ -1,0 +1,46 @@
+{% extends "layout.html"%}
+{% block title %}Login{% endblock %}
+
+{%block content%}
+
+    
+    <div class="container w-50 my-5 border-1 rounded shadow">
+        <div class="row">
+            <div class="col">
+                <h2 class="fw-bold text-center text-success py-2">Iniciar Sesión</h2>
+
+                <form action="{{ url_for('login') }}" method="post" name="formRegistro" onsubmit="validar_formulario();">
+                    <div class="mb-4">
+                        <label for="correo" class="form-label fw-bold">
+                            Correo electrónico
+                        </label>
+                        <input class="form-control" type="email" name="correo"  id="correo" aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="form-label fw-bold">
+                            Contraseña
+                        </label>
+                        <input class="form-control" type="password"  name="password" id="password">
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success fw-bold">
+                            Iniciar Sesión
+                        </button>
+                    </div>
+                    <div class="my-3">
+                        <span>
+                            No tienes cuenta? <a href="/Registro">Registrate</a>
+                        </span>
+                        <span>
+                            <a href="#">Recuperar password</a>
+                        </span>
+
+                    </div>
+                    
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+{%endblock%}

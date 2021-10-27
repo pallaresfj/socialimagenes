@@ -1,0 +1,72 @@
+{% extends "layout.html"%}
+{% block title %}Mensajes{% endblock %}
+
+{%block content%}
+<div class="container w-75 my-5">
+    <h1 class="fw-bold text-center text-success py-2">Mensajes</h1>
+</div>
+<div class="container w-75 my-5 border-1 rounded shadow">
+    <div class="row">
+        <div class="col">
+            <h2 class="fw-bold text-start text-success py-2">
+                Recibidos
+            </h2>
+            <table class="table table-light">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Remitente</th>
+                        <th>Mensaje</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for recibido in recibidos  %}
+                        <tr>
+                            <td>{{ recibido[3] }}</td>
+                            <td>{{ recibido[4] }}</td>
+                            <td>
+                                <a href="/DelMensajeRec/{{recibido[0]}}">
+                                    <img src="/static/img/deleted-ico.png" alt="Buscar" width="30" height="30" class="d-inline-block align-text-middle">
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="container w-75 my-5 border-1 rounded shadow">
+    <div class="row">
+        <div class="col">
+            <h2 class="fw-bold text-end text-success py-2">
+                Enviados
+            </h2>
+            <table class="table table-light">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Mensaje</th>
+                        <th>Destinatario</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for enviado in enviados  %}
+                        <tr>
+                            <td>{{ enviado[4] }}</td>
+                            <td>{{ enviado[3] }}</td>
+                            <td>
+                                <a href="/DelMensajeRec/{{enviado[0]}}">
+                                    <img src="/static/img/deleted-ico.png" alt="Buscar" width="30" height="30" class="d-inline-block align-text-middle">
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+    
+{%endblock%}

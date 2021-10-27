@@ -1,0 +1,76 @@
+{% extends "layout.html"%}
+{% block title %}Imágenes del Usuario{% endblock %}
+
+{%block content%}
+<style>
+  .col-25 {
+  float: left;
+  width: 10%;
+  margin-top: 6px;
+}
+
+.col-75 {
+  float: left;
+  width: 90%;
+  margin-top: 6px;
+}
+</style>
+<div class="row">
+  <div class="col-25">
+    <img src="..\static\img\persona.png" alt="" width="200" height="200" >
+  </div>
+  <div class="col-75">
+    <H1>Mi Perfil</H1>
+    <p>Descripcion por el Usuario</p>
+  </div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="col">
+      
+      <div class="card h-100">
+        <img src="..\static\img\logo-diseno-camara_1465-19.jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Foto 1</h5>
+          <a href="#" class="btn btn-outline-success">Comentarios</a>
+          <a href="#" class="btn btn-outline-primary">Editar</a>
+          <a href="#" class="btn btn-outline-danger">Eliminar</a>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card h-100">
+        <img src="..\static\img\logo-diseno-camara_1465-19.jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Foto 2</h5>
+          <a href="#" class="btn btn-outline-success">Comentarios</a>
+          <a href="#" class="btn btn-outline-primary">Editar</a>
+          <a href="#" class="btn btn-outline-danger">Eliminar</a>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card h-100">
+        <img src="..\static\img\logo-diseno-camara_1465-19.jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Foto 3</h5>
+          <a href="#" class="btn btn-outline-success">Comentarios</a>
+          <a href="#" class="btn btn-outline-primary">Editar</a>
+          <a href="#" class="btn btn-outline-danger">Eliminar</a>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card h-100">
+        <img src="..\static\img\logo-diseno-camara_1465-19.jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Foto 4</h5>
+          <a href="#" class="btn btn-outline-success">Comentarios</a>
+          <a href="#" class="btn btn-outline-primary">Editar</a>
+          <a href="#" class="btn btn-outline-danger">Eliminar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{%endblock%}

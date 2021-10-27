@@ -1,0 +1,47 @@
+{% extends "layout.html"%}
+{% block title %}Ayuda{% endblock %}
+
+{%block content%}
+
+    
+    <div class="container w-75 my-5 border-1 rounded shadow">
+        <div class="row">
+            <div class="col">
+                <h2 class="fw-bold text-center text-success py-2">Indique su sugerencia, problema o comentario</h2>
+
+                <form action="{{ url_for('soporte') }}" method="post" name="formRegistro" onsubmit="validar_formulario();">
+                    <div class="mb-4">
+                        <label for="nombre" class="form-label fw-bold">
+                            Nombre
+                        </label>
+                        <input class="form-control" type="text" name="nombre"  id="nombre">
+                    </div>
+                    <div class="mb-4">
+                        <label for="email" class="form-label fw-bold">
+                            Correo electrónico
+                        </label>
+                        <input class="form-control" type="email" name="email"  id="email" aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-4">
+                        <label for="asunto" class="form-label fw-bold">
+                            Asunto
+                        </label>
+                        <input class="form-control" type="text" name="asunto"  id="asunto" aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-4">
+                        <textarea class="form-control" name="mensaje" id="mensaje" rows="3" placeholder="Solicitud"></textarea>
+                    </div>
+
+                    <div class="d-grid mb-4">
+                        <button type="submit" class="btn btn-success fw-bold">
+                            Enviar
+                        </button>
+                    </div>
+                    
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+{%endblock%}

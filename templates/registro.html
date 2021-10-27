@@ -1,0 +1,48 @@
+{% extends "layout.html"%}
+{% block title %}Registro{% endblock %}
+
+{%block content%}
+    <div class="container w-50 my-5 border-1 rounded shadow">
+        <div class="row">
+            <div class="col">
+                <h2 class="fw-bold text-center text-success py-2">Registrar Usuario</h2>
+
+                <form action="{{ url_for('registro') }}" method="post" name="formRegistro" onsubmit="validar_formulario();">
+                    <div class="mb-4">
+                        <label for="email" class="form-label fw-bold">
+                            Correo electrónico
+                        </label>
+                        <input class="form-control" type="email" name="email"  id="email" aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="form-label fw-bold">
+                            Contraseña
+                        </label>
+                        <input class="form-control" type="password"  name="password" id="password">
+                    </div>
+                    <div class="mb-4">
+                        <label for="nombre" class="form-label fw-bold">
+                            Nombre
+                        </label>
+                        <input class="form-control" type="text" name="nombre"  id="nombre">
+                    </div>
+                    <div class="mb-4 form-check">
+                        <input type="checkbox" class="form-check-input" name="condicion" id="condicion">
+                        <label for="condicion" class="form-check-label">
+                            Declaro haber leído y aceptar las condiciones generales del programa y la normativa sobre protección de datos.
+                        </label>
+
+                    </div>
+                    <div class="d-grid mb-4">
+                        <button type="submit" class="btn btn-success fw-bold">
+                            Registrar
+                        </button>
+                    </div>
+                    
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+{%endblock%}

@@ -1,0 +1,56 @@
+{% extends "layout.html"%}
+{% block title %}Mensajes{% endblock %}
+
+{%block content%}
+<div class="container w-75 my-5">
+    <h1 class="fw-bold text-start text-success py-2">
+        Mis Comentarios
+    </h1>
+</div>
+<div class="container w-75 my-5 border-1 rounded shadow">
+    <div class="row">
+        <div class="col">
+            <table class="table table-light">
+                <tbody>
+                    {% for comentario in miscomentarios  %}
+                        <tr>
+                            <td>
+                                <div class="card" style="width: 12rem;">
+                                    <img src="{{ url_for('uploads',nombreimagen = comentario[7]) }}" class="card-img-top" alt="...">
+                                </div>
+                            </td>
+                            <td>
+                                <div class="card">
+                                    <h5 class="card-header">
+                                        {{ comentario[4] }}
+                                    </h5>
+                                    <div class="card-body">
+                                        <h6 class="card-title">
+                                            Autor: 
+                                            <span class="fw-bold fst-italic">
+                                                {{ comentario[6] }}
+                                            </span>
+                                        </h6>
+                                        <p class="card-text">
+                                            {{ comentario[3] }}
+                                        </p>
+                                        <div class="">
+                                            <a href="#">
+                                                <img src="/static/img/edit-text-ico.png" width="30" height="30" class="d-inline-block align-text-middle">
+                                            </a>
+                                            <a href="/DelComentario/{{comentario[0]}}">
+                                                <img src="/static/img/deleted-ico.png" width="30" height="30" class="d-inline-block align-text-middle">
+                                            </a>
+                                        </div>
+                                    </div>
+                                  </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+    
+{%endblock%}

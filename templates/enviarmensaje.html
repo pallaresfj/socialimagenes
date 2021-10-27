@@ -1,0 +1,30 @@
+{% extends "layout.html"%}
+{% block title %}Envío de Mensajes{% endblock %}
+
+{%block content%}
+
+    
+    <div class="container w-75 my-5 border-1 rounded shadow">
+        <div class="row">
+            <div class="col">
+                <h2 class="fw-bold text-center text-success py-2">Envío de mensajes</h2>
+                <form action="{{ url_for('enviar_mensaje') }}" method="post" name="formRegistro" onsubmit="validar_formulario();">
+                    <div class="mb-4">
+                        <input class="form-control" type="email" name="email"  id="email" aria-describedby="emailHelp" placeholder="Correo del destinatario">
+                    </div>
+                    <div class="mb-4">
+                        <textarea class="form-control" name="mensaje" id="mensaje" rows="3" placeholder="Escriba el mensaje"></textarea>
+                    </div>
+                    <div class="d-grid mb-4">
+                        <button type="submit" class="btn btn-success fw-bold">
+                            Enviar Mensaje
+                        </button>
+                    </div>
+                    
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+{%endblock%}

@@ -1,0 +1,27 @@
+{% extends "layout.html"%}
+{% block title %}Editar comentarios{% endblock %}
+
+{%block content%}
+<!-- Vertically centered modal -->
+<div class="modal-dialog modal-dialog-centered">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col">
+          <div class="card h-100">
+            <img src="..\static\img\logo-diseno-camara_1465-19.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">User 1</h5>
+              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              
+              <a href="#" class="btn btn-outline-success">Editar Comentario</a>
+              <a href="#" class="btn btn-outline-danger">Eliminar</a>
+            </div>
+          </div>
+        </div>
+  </div>
+  
+  <!-- Vertically centered scrollable modal -->
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    ...
+  </div>
+
+  {%endblock%}

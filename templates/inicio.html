@@ -1,0 +1,38 @@
+{% extends "layout.html"%}
+{% block title %}Inicio{% endblock %}
+
+{%block content%}
+<div class="container w-75 my-5">
+    <h1 class="fw-bold text-center text-success py-2">
+        Descubre el mundo a través de Imágenes
+    </h1>
+</div>
+<div class="container w-75 my-5 border-1 rounded shadow">
+    <div class="lightbox">
+        <div class="row">
+            <div class="col-lg-6">
+                <img
+                src="{{ url_for('uploads',nombreimagen = allimagenes[0]) }}"
+                data-mdb-img="{{ url_for('uploads',nombreimagen = allimagenes[0]) }}"
+                alt="Lightbox image 1"
+                class="w-100 mb-2 mb-md-4 shadow-1-strong rounded"
+                />
+                <img
+                src="{{ url_for('uploads',nombreimagen = allimagenes[1]) }}"
+                data-mdb-img="{{ url_for('uploads',nombreimagen = allimagenes[1]) }}"
+                alt="Lightbox image 2"
+                class="w-100 shadow-1-strong rounded"
+                />
+            </div>
+            <div class="col-lg-6">
+                <img
+                src="{{ url_for('uploads',nombreimagen = allimagenes[2]) }}"
+                data-mdb-img="{{ url_for('uploads',nombreimagen = allimagenes[2]) }}"
+                alt="Lightbox image 3"
+                class="w-100 shadow-1-strong rounded"
+                />
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}
