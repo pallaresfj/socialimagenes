@@ -8,10 +8,12 @@ from flask import session
 from flask import g
 from flask import send_from_directory
 from werkzeug.security import generate_password_hash, check_password_hash
-# from werkzeug import secure_filename
+# from werkzeug.utils import secure_filename
+# from werkzeug.datastructures import  FileStorage
 from utils import isUsernameValid, isEmailValid, isPasswordValid
 import yagmail as yagmail
 import os
+import uuid
 from db import get_db
 from random import randint
 
@@ -35,10 +37,6 @@ def inicio():
     allimagenes = db.execute(
             'SELECT NombreArchivo FROM tbImagenes ORDER BY RANDOM() LIMIT 3').fetchall()
     db.commit()
-
-    print('AllImagenes')
-    print(allimagenes)
-
     return render('inicio.html',allimagenes=allimagenes)
     
 @app.route('/Registro', methods=['GET','POST'])
@@ -48,10 +46,8 @@ def registro():
         password = request.form['password']
         nombre = request.form['nombre']             
         tipousuario = '3'
-
         error = None
         db = get_db()
-
         user_email = db.execute(
             'SELECT * FROM tbUsuarios WHERE correo = ? ', (email,) 
             ).fetchone()
@@ -77,9 +73,7 @@ def registro():
                 'INSERT INTO tbUsuarios (Correo, Contrasena, Nombre, TipoUs) VALUES (?,?,?,?)',
                 (email, password_cifrado, nombre, tipousuario)
             )
-                      
             db.commit()
-
             return redirect( url_for( 'login' ) )    
     # GET:
     session.clear()
@@ -91,7 +85,6 @@ def login():
         db = get_db()
         usuario = request.form['correo']
         password = request.form['password'] 
-
         error = None
 
         if not usuario:
@@ -138,7 +131,6 @@ def soporte():
         email = request.form['email']
         asunto = request.form['asunto']
         mensaje = request.form['mensaje']        
-
         error = None
 
         if not nombre:
@@ -153,7 +145,6 @@ def soporte():
         if not mensaje:
             error = "Contraseña requerida."
             flash(error)
-
         if error is not None:
             return render("soporte.html")
         else:
@@ -176,15 +167,12 @@ def listar_mensajes():
         return redirect( url_for( 'login' ) )
     else:
         db = get_db()
-
         recibidos = db.execute(
                 'SELECT tbMensajes.Id, tbMensajes.IdDe, tbMensajes.IdPara, tbUsuarios.Nombre, tbMensajes.Mensaje FROM tbMensajes INNER JOIN tbUsuarios ON tbUsuarios.Id = tbMensajes.IdDe WHERE tbMensajes.IdPara = ?', (session['id_usuario'],) 
                 ).fetchall()
-        
         enviados = db.execute(
                 'SELECT tbMensajes.Id, tbMensajes.IdDe, tbMensajes.IdPara, tbUsuarios.Nombre, tbMensajes.Mensaje FROM tbMensajes INNER JOIN tbUsuarios ON tbUsuarios.Id = tbMensajes.IdPara WHERE tbMensajes.IdDe = ?', (session['id_usuario'],) 
                 ).fetchall()
-
         db.commit()
         return render('mensajes.html',recibidos=recibidos, enviados=enviados)
 
@@ -193,7 +181,6 @@ def enviar_mensaje():
     if request.method == 'POST':
         email = request.form['email']
         mensaje = request.form['mensaje']           
-
         error = None
         db = get_db()
 
@@ -211,17 +198,14 @@ def enviar_mensaje():
         if user is None:
             error = "El usuario destino no existe."
             flash(error)
-
         if error is not None:
             return render("enviarmensaje.html")
         else:
             db.execute(
                 'INSERT INTO tbMensajes (IdDe, IdPara, Mensaje) VALUES (?,?,?)',
                 (session['id_usuario'], user[0], mensaje)
-            )
-                      
+            )   
             db.commit()
-
             return redirect( url_for( 'enviar_mensaje' ) )    
     # GET:
     if not session:
@@ -297,11 +281,9 @@ def mis_comentarios():
         return redirect( url_for( 'login' ) )
     else:
         db = get_db()
-        
         miscomentarios = db.execute(
                 'SELECT tbComentarios.Id, tbComentarios.IdImagen, tbComentarios.IdUsuario, tbComentarios.Comentario, tbImagenes.TituloImagen, tbImagenes.IdAutor, tbUsuarios.Nombre, tbImagenes.NombreArchivo FROM tbComentarios INNER JOIN tbImagenes ON tbImagenes.Id = tbComentarios.IdImagen INNER JOIN tbUsuarios ON tbUsuarios.Id = tbImagenes.IdAutor WHERE tbComentarios.IdUsuario = ?', (session['id_usuario'],) 
                 ).fetchall()
-
         db.commit()
         return render('miscomentarios.html',miscomentarios=miscomentarios)
 
@@ -314,44 +296,55 @@ def del_comentario(id):
     flash('Comenario eliminado.')
     return redirect( url_for( 'mis_comentarios' ) )
 
-
 @app.route('/MisImagenes', methods=['GET'])
 def mis_imagenes():
     if not session:
         return redirect( url_for( 'login' ) )
-    else:
-        db = get_db()
-        
-        misimagenes = db.execute(
-                'SELECT tbImagenes.Id, tbImagenes.IdAutor, tbImagenes.IdCategoria, tbImagenes.TituloImagen, tbImagenes.NombreArchivo, tbImagenes.Tags, tbUsuarios.Nombre, tbImagenes.IdCategoria FROM tbImagenes INNER JOIN tbUsuarios ON tbUsuarios.Id = tbImagenes.IdAutor INNER JOIN tbCategorias ON tbCategorias.Id = tbImagenes.IdCategoria WHERE tbImagenes.IdAutor = ?', (session['id_usuario'],) 
-                ).fetchall()
 
-        db.commit()
+    db = get_db()
+    
+    misimagenes = db.execute(
+            'SELECT tbImagenes.Id, tbImagenes.IdAutor, tbImagenes.IdCategoria, tbImagenes.TituloImagen, tbImagenes.NombreArchivo, tbImagenes.Tags, tbUsuarios.Nombre, tbImagenes.IdCategoria FROM tbImagenes INNER JOIN tbUsuarios ON tbUsuarios.Id = tbImagenes.IdAutor INNER JOIN tbCategorias ON tbCategorias.Id = tbImagenes.IdCategoria WHERE tbImagenes.IdAutor = ?', (session['id_usuario'],) 
+            ).fetchall()
+    db.commit()
+    return render('misimagenes.html',misimagenes=misimagenes)
 
-        return render('misimagenes.html',misimagenes=misimagenes)
-
-@app.route("/upload", methods=['POST'])
-def uploader():
+@app.route('/Upload', methods=['GET','POST'])
+def upload_imagen():
+    if not session:
+        return redirect( url_for( 'login' ) )
     if request.method == 'POST':
-        
+        titulo = request.form['titulo']
+        categoria = request.form['categoria']
+        etiquetas = request.form['etiquetas']
+        archivo = request.files['archivo']
+
+        error = None
+
+        if not titulo:
+            error = "Título de la imagen requerido."
+            flash(error)
+        if not archivo:
+            error = "No se seleccionó archivo de imágen."
+            flash(error)
+        if error is not None:
+            return redirect( url_for( 'mis_imagenes' ) )
+        f = str(uuid.uuid4()) + archivo.filename
+        print('ARCHIVO: ',f)
+        archivo.save(os.path.join(app.config['CARPETA'],f))
+
         db=get_db()
-
-        # obtenemos el archivo del input "archivo"
-        f = request.files['archivo']
-        filename = f.filename
-        # filename = secure_filename(f.filename)
-        # Guardamos el archivo en el directorio "Archivos PDF"
-        f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
-        db.execute(
-                'INSERT INTO tbImagenes (IdAutor, IdCategoria, TituloImagen, NombreArchivo,Tags) VALUES (?,?,?,?,?)',
-                (  session['id_usuario'], 2, "prueba", f.filename,"Si")
-        )
-
-
-
+        sql = 'INSERT INTO tbImagenes (Id, IdAutor, IdCategoria, TituloImagen, NombreArchivo, Tags) VALUES (NULL,?,?,?,?,?);'
+        datos = (session['id_usuario'],categoria,titulo,f,etiquetas)
+        db.execute(sql,datos)
         db.commit()
-        return redirect('/MisImagenes')
+        return redirect( url_for( 'mis_imagenes' ) )
+
+        
+
+    # GET
+    return render('addimagen.html')
+
 @app.route('/ListarPublicaciones', methods=['GET'])
 def listar_publicaciones():
     return render('pubporusuario.html')
