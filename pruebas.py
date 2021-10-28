@@ -17,15 +17,22 @@ app = Flask (__name__)
 app.secret_key = os.urandom(24)
 
 
-@app.route('/', methods=['GET'])
-@app.route('/Inicio', methods=['GET'])
-def inicio():
+@app.route('/DelImagen/<int:id>')
+def delMensajeRec(id):
     db = get_db()
-    
-    allimagenes = db.execute(
-            'SELECT Id, IdAutor, IdCategoria, TituloImagen, NombreArchivo, Tags FROM tbImagenes ORDER BY Id DESC' 
-            ).fetchall()
+
+    sql1 = 'SELECT NombreArchivo FROM tbImagenes WHERE Id = ' + str(id)
+    sql2 = 'DELETE FROM tbComentarios WHERE IdImagen = ' + str(id)
+    sql3 = 'DELETE FROM tbImagenes WHERE Id = ' + str(id)
+
+    filename = db.execute(sql1).fetchone()
+
+    os.remove(os.path.join(app.config['CARPETA'],filename))
+
+    db.execute(sql2)
+    db.execute(sql3)
 
     db.commit()
 
-    return render('inicio.html',allimagenes=allimagenes)
+    flash('Se eliminó la imágen y los comentarios asociados.')
+    return redirect( url_for( 'mis_imagenes' ) )

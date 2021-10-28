@@ -8,8 +8,6 @@ from flask import session
 from flask import g
 from flask import send_from_directory
 from werkzeug.security import generate_password_hash, check_password_hash
-# from werkzeug.utils import secure_filename
-# from werkzeug.datastructures import  FileStorage
 from utils import isUsernameValid, isEmailValid, isPasswordValid
 import yagmail as yagmail
 import os
@@ -266,7 +264,6 @@ def perfil_usuario():
                         return redirect( url_for( 'perfil_usuario' ))
 
         return redirect( url_for( 'perfil_usuario' ))
-
     # GET:
     db = get_db()
     sql = 'SELECT Id, Correo, Contrasena, Nombre, TipoUs, DescripcionUsuario FROM tbUsuarios WHERE Id = ' + str(session['id_usuario'])
@@ -300,9 +297,7 @@ def del_comentario(id):
 def mis_imagenes():
     if not session:
         return redirect( url_for( 'login' ) )
-
     db = get_db()
-    
     misimagenes = db.execute(
             'SELECT tbImagenes.Id, tbImagenes.IdAutor, tbImagenes.IdCategoria, tbImagenes.TituloImagen, tbImagenes.NombreArchivo, tbImagenes.Tags, tbUsuarios.Nombre, tbImagenes.IdCategoria FROM tbImagenes INNER JOIN tbUsuarios ON tbUsuarios.Id = tbImagenes.IdAutor INNER JOIN tbCategorias ON tbCategorias.Id = tbImagenes.IdCategoria WHERE tbImagenes.IdAutor = ?', (session['id_usuario'],) 
             ).fetchall()
@@ -339,11 +334,28 @@ def upload_imagen():
         db.execute(sql,datos)
         db.commit()
         return redirect( url_for( 'mis_imagenes' ) )
-
-        
-
     # GET
     return render('addimagen.html')
+
+@app.route('/DelImagen/<int:id>')
+def delImagen(id):
+    db = get_db()
+
+    sql1 = 'SELECT NombreArchivo FROM tbImagenes WHERE Id = ' + str(id)
+    sql2 = 'DELETE FROM tbComentarios WHERE IdImagen = ' + str(id)
+    sql3 = 'DELETE FROM tbImagenes WHERE Id = ' + str(id)
+
+    filename = db.execute(sql1).fetchone()
+
+    os.remove(os.path.join(app.config['CARPETA'],filename[0]))
+
+    db.execute(sql2)
+    db.execute(sql3)
+
+    db.commit()
+
+    flash('Se eliminó la imágen y los comentarios asociados.')
+    return redirect( url_for( 'mis_imagenes' ) )
 
 @app.route('/ListarPublicaciones', methods=['GET'])
 def listar_publicaciones():

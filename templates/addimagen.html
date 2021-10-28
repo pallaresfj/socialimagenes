@@ -11,7 +11,14 @@
                     <input class="form-control" type="text" name="titulo"  id="titulo" placeholder="Título de la imágen">
                 </div>
                 <div class="mb-4">
-                    <input class="form-control" type="text" name="categoria"  id="categoria" placeholder="Seleccione la categoria">
+                    <select class="form-control" name="categoria" id="categoria" placeholder="Seleccione la categoria">
+                        <option disabled selected>Selecciona una categoria</option>
+                        <option value=1>Naturaleza</option>
+                        <option value=2>Tecnologia</option>
+                        <option value=3>Paisajes</option>
+                        <option value=4>Personas</option>
+                        <option value=5>Abtracta</option>
+                    </select>
                 </div>
                 <div class="mb-4">
                     <input class="form-control" type="text" name="etiquetas"  id="etiquetas" placeholder="Escriba palabras clave separadas por (,)">
@@ -20,11 +27,20 @@
                     <label for="archivo" class="form-label">Archivo</label>
                     <input class="form-control" type="file" name="archivo" id="archivo">
                 </div>
-                <div class="d-grid mb-4">
-                    <button type="submit" class="btn btn-success fw-bold">
-                        Agregar Imágen
-                    </button>
+                <div class="row mb-4">
+                    <div class="col d-grid">
+                        <a class="btn btn-success fw-bold"" href="/MisImagenes" role="button">
+                            Cancelar
+                        </a>
+                    </div>
+                    <div class="col d-grid">
+                        <button type="submit" class="btn btn-success fw-bold">
+                            Agregar
+                        </button>
+                    </div>
                 </div>
+                </div>
+                
                 
             </form>
 
