@@ -20,7 +20,6 @@ app = Flask (__name__)
 app.secret_key = os.urandom(24)
 
 CARPETA = os.path.join('uploads')
-# CARPETA = os.path.join('/home/fpallares/socialimagenes/uploads')
 app.config['CARPETA'] = CARPETA
 
 @app.route('/uploads/<nombreimagen>')
@@ -237,7 +236,7 @@ def perfil_usuario():
             db = get_db()
             db.execute(sql,datos)
             db.commit()
-            flash('Datos del usuario actualizados correctamente.')
+            flash('Datos actualizados correctamente.')
         else:
             db = get_db()
             password_a = db.execute(
@@ -259,12 +258,13 @@ def perfil_usuario():
                         db = get_db()
                         db.execute(sql,datos)
                         db.commit()
-                        flash('Datos del usuario actualizados correctamente.')
+                        flash('Datos actualizados correctamente.')
                     else:
                         flash('Las contraseñas no coinciden.')
                         return redirect( url_for( 'perfil_usuario' ))
 
-        return redirect( url_for( 'inicio' ))
+        return redirect( url_for( 'perfil_usuario' ))
+
     # GET:
     db = get_db()
     sql = 'SELECT Id, Correo, Contrasena, Nombre, TipoUs, DescripcionUsuario FROM tbUsuarios WHERE Id = ' + str(session['id_usuario'])
@@ -371,10 +371,11 @@ def upload_comentario(id):
         db.execute(sql,datos)
         db.commit()
     else: 
-        return render("addcomentario.html")
+        return render("addComentario.html")
 
     return redirect( url_for( 'mis_imagenes' ))  
     
+
 @app.route('/ListarPublicaciones', methods=['GET'])
 def listar_publicaciones():
     return render('pubporusuario.html')
@@ -393,20 +394,6 @@ def usuario_info(id_usuario):
         return render('gestionusuarios.html')
     else:
         return f"El usuario {id_usuario} no existe."
-
-@app.route('/Searchs', methods=['GET','POST'])
-def searchs():
-    if not session:
-        return redirect( url_for( 'login' ) )
-    if request.method == 'POST':
-        buscarimg=request.form['searchs']
-        db = get_db()
-        searchimagenes = db.execute(
-                    'SELECT tbImagenes.NombreArchivo FROM tbImagenes WHERE tbImagenes.IdAutor IN (SELECT tbUsuarios.Id FROM tbUsuarios WHERE tbUsuarios.Nombre  = ?)',[buscarimg]).fetchall()
-        db.commit()
-        return render('searchimagenes.html',searchimagenes=searchimagenes)
-
-    return redirect( url_for( 'inicio' ) )
 
 
 if __name__ == '__main__' :

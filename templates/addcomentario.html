@@ -1,0 +1,33 @@
+{% extends "layout.html"%}
+{% block title %}Agregar Comentario{% endblock %}
+
+{%block content%}
+<div class="container w-75 my-5 border-1 rounded shadow">
+    <div class="row">
+        <div class="col">
+            <h2 class="fw-bold text-center text-success py-2">Agregar Comentario</h2>
+            <form  method="post" enctype = "multipart/form-data" name="upload_comentario">
+                <div class="mb-4">
+                    <textarea class="form-control" name="comentario" id="comentario" rows="3" placeholder="Escriba el comentario para la imágen"></textarea>
+                </div>
+
+
+
+                <div class="row mb-4">
+                    <div class="col d-grid">
+                        <a class="btn btn-success fw-bold" href="/MisImagenes" role="button">
+                            Cancelar
+                        </a>
+                    </div>
+                    <div class="col d-grid">
+                        <button type="submit" class="btn btn-success fw-bold">
+                            Agregar Comentario
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{%endblock%}
