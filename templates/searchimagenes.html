@@ -12,17 +12,19 @@
     {% for imagen in searchimagenes  %}
     <div class="col my-3">
       <div class="card" style="width: 18rem;">
-        <img src="{{ url_for('uploads',nombreimagen = imagen[0]) }}" class="card-img-top p-2" alt="...">
+        <img src="{{ url_for('uploads',nombreimagen = imagen[4]) }}" class="card-img-top p-2" alt="...">
         <div class="card-body">
           <h5 class="card-title">{{imagen[3]}}</h5>
           <p class="card-text">Etiquetas: {{imagen[5]}}</p>
           <div class="">
-            <a href="#">
+            <a href="/UploadComentario/{{imagen[0]}}">
                 <img src="/static/img/edit-text-ico.png" width="30" height="30" class="d-inline-block align-text-middle">
             </a>
-            <a href="#">
+            {% if imagen[0] == session['id_usuario'] %}
+              <a href="/DelImagen/{{imagen[0]}}">
                 <img src="/static/img/deleted-ico.png" width="30" height="30" class="d-inline-block align-text-middle">
-            </a>
+              </a>
+            {% endif %}
           </div>
         </div>
       </div>

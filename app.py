@@ -402,7 +402,7 @@ def searchs():
         buscarimg=request.form['searchs']
         db = get_db()
         searchimagenes = db.execute(
-                    'SELECT tbImagenes.NombreArchivo FROM tbImagenes WHERE tbImagenes.IdAutor IN (SELECT tbUsuarios.Id FROM tbUsuarios WHERE tbUsuarios.Nombre  = ?)',[buscarimg]).fetchall()
+                    'SELECT tbImagenes.Id, tbImagenes.IdAutor, tbImagenes.IdCategoria, tbImagenes.TituloImagen, tbImagenes.NombreArchivo, tbImagenes.Tags FROM tbImagenes WHERE tbImagenes.IdAutor IN (SELECT tbUsuarios.Id FROM tbUsuarios WHERE tbUsuarios.Nombre  = ?)',[buscarimg]).fetchall()
         db.commit()
         return render('searchimagenes.html',searchimagenes=searchimagenes)
 
