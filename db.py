@@ -6,7 +6,8 @@ from flask import current_app, g
 def get_db():
     try:
         if 'db' not in g:
-            g.db = sqlite3.connect('database/dbsocial.db')               
+            g.db = sqlite3.connect('database/dbsocial.db')
+            # g.db = sqlite3.connect('/home/fpallares/socialimagenes/database/dbsocial.db')           
         return g.db
     except Error:
         print(Error)
